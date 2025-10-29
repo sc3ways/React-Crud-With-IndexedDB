@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { USER_DATA } from "../data/data";
 
 const idb =
   window.indexedDB ||
@@ -23,14 +24,25 @@ const createCollectionIndexedDB = () => {
     const db = request.result;
 
     if (!db.objectStoreNames.contains("myUserData")) {
-      db.createObjectStore("myUserData", {
+      const objStore = db.createObjectStore("myUserData", {
         keyPath: "id",
       });
+      objStore.createIndex("age", "age", {
+        unique:false
+      })      
     }
   };
 
   request.onsuccess = () => {
     console.log("Database opened successfully.");
+
+    const db = request.result;
+    const transaction = db.transaction("myUserData", "readwrite")
+    const userData = transaction.objectStore("myUserData");
+
+    USER_DATA.forEach((item) => userData.add(item));
+
+    return transaction.complete;
   };
 };
 

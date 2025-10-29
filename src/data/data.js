@@ -1,0 +1,30 @@
+export const USER_DATA = [
+    {
+        id:1,
+        firstName:"Sunil",
+        lastName:"Choudhary",
+        email:"scweb@gmail.com",
+        age:38
+    },
+    {
+        id:2,
+        firstName:"Sangam",
+        lastName:"Sah",
+        email:"sah.sangam@gmail.com",
+        age:40
+    },
+    {
+        id:3,
+        firstName:"Deepak",
+        lastName:"Varma",
+        email:"deepak.v@gmail.com",
+        age:24
+    },
+    {
+        id:4,
+        firstName:"Deepa",
+        lastName:"Talpade",
+        email:"tdeepa@gmail.com",
+        age:18
+    }
+]
