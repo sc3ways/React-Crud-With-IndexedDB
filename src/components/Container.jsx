@@ -50,6 +50,7 @@ const Container = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
   const [allUsersData, setAllUsersData] = useState([]);
   const [message, setMessage] = useState("")
   const [isAddUser, setIsAddUser] = useState(false);
@@ -97,6 +98,7 @@ const Container = () => {
           firstName,
           lastName,
           email,
+          age
         });
 
         user.onsuccess = () => {
@@ -105,7 +107,8 @@ const Container = () => {
           };
 
           getAllUsersData();          
-          setMessage(<p className="pl-4 text-green-700 font-semibold">User Added successfully.</p>)
+          setMessage(<p className="pl-4 text-green-700 font-semibold">User Added successfully.</p>)         
+          setIsAddUser(false)
           
         };
 
@@ -118,6 +121,7 @@ const Container = () => {
           firstName,
           lastName,
           email,
+          age
         });
 
         user.onsuccess = () => {
@@ -127,6 +131,8 @@ const Container = () => {
 
           getAllUsersData();          
           setMessage(<p className="pl-4 text-green-700 font-semibold">User updated successfully.</p>)
+
+          setIsEditUser(false)
           
         };
 
@@ -146,6 +152,7 @@ const Container = () => {
     setFirstName("")
     setLastName("")
     setEmail("")
+    setAge("")
   }
   const editUserHandler = (user) => {
     setIsAddUser(false)
@@ -154,6 +161,7 @@ const Container = () => {
     setFirstName(user?.firstName)
     setLastName(user?.lastName)
     setEmail(user?.email)
+    setAge(user?.age)
   }
   
   const deleteUserHandler = (user) =>{
@@ -186,7 +194,7 @@ const Container = () => {
     <div className="w-full min-h-[84vh]">
       <div className="lg:w-7xl sm:w-full mx-auto px-4 py-8">
         <div className="row flex flex-wrap justify-center">
-          <div className="lg:w-[50%] w-full px-4">
+          <div className="lg:w-[60%] w-full px-4">
             <div className="w-full text-right">
               <button
                 onClick={addUserHandler}
@@ -199,6 +207,7 @@ const Container = () => {
               <div className="flex border-b border-b-gray-300">
                 <span className="w-[23%] p-2 text-sm font-bold">Firstname</span>
                 <span className="w-[23%] p-2 text-sm font-bold">Lastname</span>
+                <span className="w-[12%] p-2 text-sm font-bold">Age</span>
                 <span className="w-[32%] p-2 text-sm font-bold">Email</span>
                 <span className="w-[22%] p-2 text-sm font-bold text-center">
                   Actions
@@ -208,6 +217,7 @@ const Container = () => {
                 <div key={row?.id} className="flex border-b border-b-gray-300 nth-last-of-type-[1]:border-none">
                   <span className="w-[23%] p-2 text-sm">{row?.firstName}</span>
                   <span className="w-[23%] p-2 text-sm">{row?.lastName}</span>
+                  <span className="w-[12%] p-2 text-sm">{row?.age}</span>
                   <span className="w-[32%] p-2 text-sm">{row?.email}</span>
                   <span className="w-[22%] p-2 text-sm flex gap-1 justify-center">
                     <button
@@ -227,7 +237,7 @@ const Container = () => {
               ))}
             </div>
           </div>
-          {isAddUser || isEditUser ? (<div className="lg:w-[50%] w-full px-4">
+          {isAddUser || isEditUser ? (<div className="lg:w-[40%] w-full px-4">
             <div className="w-full bg-white border border-gray-300 px-4 py-1 rounded-sm">
               <h2 className="text-xl border-b border-b-gray-300 pb-2 pt-1 font-bold">
                 {isAddUser?"Add": "Update"} User
@@ -248,6 +258,16 @@ const Container = () => {
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  className="w-full h-9 rounded-sm border border-gray-300 px-4 text-sm"
+                  placeholder="Last Name"
+                />
+              </div>
+              <div className="flex flex-col py-2">
+                <label className="text-sm font-bold mb-1">Age</label>
+                <input
+                  type="text"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
                   className="w-full h-9 rounded-sm border border-gray-300 px-4 text-sm"
                   placeholder="Last Name"
                 />
