@@ -72,7 +72,7 @@ const Container = () => {
     };
   };
 
-  const handleSubmitButton = () => {
+  const submitButtonHandler = () => {
     const dbPromise = idb.open("my-store", 2);
     if (firstName && lastName && email) {
       dbPromise.onsuccess = () => {
@@ -135,6 +135,40 @@ const Container = () => {
     setLastName("")
     setEmail("")
   }
+  const editUserHandler = (user) => {
+    setIsAddUser(false)
+    setIsEditUser(true)
+    setSelectedUser(user)
+    setFirstName(user?.firstName)
+    setLastName(user?.lastName)
+    setEmail(user?.email)
+  }
+  
+  const deleteUserHandler = (user) =>{
+    const dbPromise = idb.open("my-store", 2);
+    dbPromise.onsuccess = () =>{
+        const db = dbPromise.result;
+        const tx = db.transaction("myUserData", "readwrite");
+        const userData = tx.objectStore("myUserData");
+        const deletedUser = userData.delete(user?.id);
+
+        deletedUser.onsuccess = () => {
+            alert("Do you want to delete user " + user?.id)
+            console.log("User deleted successfully.")
+
+            getAllUsersData();
+            setMessage("User" + user?.id + "deleted successfully.")
+        }
+
+        deletedUser.onerror = () => {
+            console.log("Error occured white deleting useer.");
+        }
+
+        tx.oncomplete = () => {
+            db.close()
+        }
+    }
+  }
 
   return (
     <div className="w-full min-h-[84vh]">
@@ -165,20 +199,13 @@ const Container = () => {
                   <span className="w-[32%] p-2 text-sm">{row?.email}</span>
                   <span className="w-[22%] p-2 text-sm flex gap-1 justify-center">
                     <button
-                      onClick={()=>{
-                        setIsEditUser(true)
-                        setIsAddUser(false)
-                        setSelectedUser(row)
-                        setFirstName(row?.firstName)
-                        setLastName(row?.lastName)
-                        setEmail(row?.email)
-                      }}
+                      onClick={()=> editUserHandler(row)}
                       className="bg-green-700 text-white py-1 px-2 cursor-pointer rounded-sm text-[12px]"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => console.log("Click delete user")}
+                      onClick={() => deleteUserHandler(row)}
                       className="bg-red-700 text-white py-1 px-2 cursor-pointer rounded-sm text-[12px]"
                     >
                       Delete
@@ -225,7 +252,7 @@ const Container = () => {
               </div>
               <div className="w-full flex py-2 mb-2">
                 <button
-                  onClick={handleSubmitButton}
+                  onClick={submitButtonHandler}
                   className="text-sm font-bold text-white bg-blue-700 py-2 px-4 rounded-md hover:bg-amber-600 cursor-pointer transition-all duration-700"
                 >
                   {isEditUser?"Update":"Add"} User
