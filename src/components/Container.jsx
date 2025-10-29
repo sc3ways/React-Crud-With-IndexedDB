@@ -127,7 +127,7 @@ const Container = () => {
     
   };
 
-  const handleAddUser = () => {
+  const addUserHandler = () => {
     setIsAddUser(true)
     setIsEditUser(false)
     setSelectedUser({})
@@ -157,7 +157,7 @@ const Container = () => {
             console.log("User deleted successfully.")
 
             getAllUsersData();
-            setMessage("User" + user?.id + "deleted successfully.")
+            alert("User" + user?.id + "deleted successfully.")
         }
 
         deletedUser.onerror = () => {
@@ -177,7 +177,7 @@ const Container = () => {
           <div className="lg:w-[50%] w-full px-4">
             <div className="w-full text-right">
               <button
-                onClick={handleAddUser}
+                onClick={addUserHandler}
                 className="text-md font-bold text-white bg-blue-700 py-2 px-4 rounded-md hover:bg-amber-600 cursor-pointer transition-all duration-700"
               >
                 + ADD
